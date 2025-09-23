@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ReportCatalogue from "./pages/ReportCatalogue";
+import RequestAccessGuided from "./pages/RequestAccessGuided";
 import MyRequests from "./pages/MyRequests";
 import MyAccess from "./pages/MyAccess";
 import NotFound from "./pages/NotFound";
@@ -20,6 +21,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/catalogue" element={<ReportCatalogue />} />
+          <Route path="/request-access-guided" element={<RequestAccessGuided />} />
           <Route path="/requests" element={<MyRequests />} />
           <Route path="/access" element={<MyAccess />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

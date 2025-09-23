@@ -8,6 +8,7 @@ import { StatusBadge } from "@/components/ui/status-badge"
 import { AccessCard } from "@/components/dashboard/access-card"
 import { NotificationCard } from "@/components/dashboard/notification-card"
 import { Search, Wand2, Settings } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("")
@@ -115,23 +116,25 @@ const Index = () => {
         <main className="flex-1 overflow-y-auto p-6">
           {/* Quick Actions */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <Card className="card-shadow hover:elevated-shadow transition-all duration-200 cursor-pointer group">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-lg sakura-gradient">
-                    <Wand2 className="h-6 w-6 text-white" />
+            <Link to="/request-access-guided">
+              <Card className="card-shadow hover:elevated-shadow transition-all duration-200 cursor-pointer group">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 rounded-lg sakura-gradient">
+                      <Wand2 className="h-6 w-6 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
+                        Request access (Guided)
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Step by step wizard for beginners via Report Catalogue
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
-                      Request access (Guided)
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      Step by step wizard for beginners via Report Catalogue
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Link>
 
             <Card className="card-shadow hover:elevated-shadow transition-all duration-200 cursor-pointer group">
               <CardContent className="p-6">
