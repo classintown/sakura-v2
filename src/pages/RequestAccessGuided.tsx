@@ -8,6 +8,7 @@ import { StatusBadge } from "@/components/ui/status-badge"
 import { Progress } from "@/components/ui/progress"
 import { MultipleAppsModal } from "@/components/ui/multiple-apps-modal"
 import { EscalationModal } from "@/components/ui/escalation-modal"
+import { LoadingSpinner } from "@/components/ui/loading-spinner"
 import { 
   Select,
   SelectContent,
@@ -15,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Search, ChevronLeft, ChevronRight, Eye, Users, Smartphone } from "lucide-react"
+import { Search, ChevronLeft, ChevronRight, Eye, Users, Smartphone, TrendingUp } from "lucide-react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 
 const RequestAccessGuided = () => {
@@ -50,6 +51,9 @@ const RequestAccessGuided = () => {
   const [showEscalationModal, setShowEscalationModal] = useState(false)
   const [isEscalated, setIsEscalated] = useState(false)
   const [isDetectingApprovers, setIsDetectingApprovers] = useState(false)
+  const [isNextLoading, setIsNextLoading] = useState(false)
+  const [isYesLoading, setIsYesLoading] = useState(false)
+  const [rlsApproverFound, setRlsApproverFound] = useState<boolean | null>(null)
 
   const totalSteps = 6 // Added success step
   const progress = isSubmitted ? 100 : (currentStep / totalSteps) * 100
@@ -70,7 +74,7 @@ const RequestAccessGuided = () => {
       workspace: "Marketing Analytics",
       type: "SAR" as const,
       description: "This standalone report shows profit and loss by client, detailing revenue, expenses, and net income to identify profitable clients and guide decisions.",
-      icon: <Eye className="h-5 w-5" />
+      iconType: "eye" as const
     },
     {
       id: "2", 
@@ -79,7 +83,7 @@ const RequestAccessGuided = () => {
       app: "Marketing Analytics App",
       type: "AUR" as const,
       description: "This report is part of the Client Leads Audience in the Marketing Analytics App. It provides insights into client profitability, resource use, and costs to support decisions.",
-      icon: <Users className="h-5 w-5" />
+      iconType: "users" as const
     },
     {
       id: "3",
@@ -87,7 +91,7 @@ const RequestAccessGuided = () => {
       workspace: "Marketing Analytics", 
       type: "APP" as const,
       description: "This app groups multiple audiences of reports for marketing performance, client portfolio, and financial tracking.",
-      icon: <Smartphone className="h-5 w-5" />
+      iconType: "smartphone" as const
     }
   ]
 
@@ -147,15 +151,26 @@ const RequestAccessGuided = () => {
 
   const handleNext = () => {
     if (validateCurrentStep() && currentStep < totalSteps) {
+      setIsNextLoading(true)
+      
       // Simulate approver detection when moving to step 4
       if (currentStep === 3) {
         setIsDetectingApprovers(true)
+        // Randomly determine if RLS approver is found (70% chance of success)
+        const isRlsApproverFound = Math.random() > 0.3
+        setRlsApproverFound(isRlsApproverFound)
+        
         setTimeout(() => {
           setIsDetectingApprovers(false)
+          setIsNextLoading(false)
           setCurrentStep(currentStep + 1)
         }, 2000)
       } else {
-        setCurrentStep(currentStep + 1)
+        // Add a small delay for better UX
+        setTimeout(() => {
+          setIsNextLoading(false)
+          setCurrentStep(currentStep + 1)
+        }, 800)
       }
     }
   }
@@ -179,7 +194,40 @@ const RequestAccessGuided = () => {
 
   const handlePrevious = () => {
     if (currentStep > 1) {
+      // Reset RLS approver state when going back to step 3
+      if (currentStep === 4) {
+        setRlsApproverFound(null)
+      }
       setCurrentStep(currentStep - 1)
+    }
+  }
+
+  const handleYesReuseRLS = () => {
+    setIsYesLoading(true)
+    setTimeout(() => {
+      setFormData({...formData, reuseExistingRLS: true})
+      setShowAdvancedRLS(false)
+      setIsYesLoading(false)
+    }, 400)
+  }
+
+  const handleAdjustDimensionFilters = () => {
+    setRlsApproverFound(null)
+    setCurrentStep(3)
+  }
+
+  const getReportIcon = (iconType: string) => {
+    switch (iconType) {
+      case "eye":
+        return <Eye className="h-5 w-5" />
+      case "users":
+        return <Users className="h-5 w-5" />
+      case "smartphone":
+        return <Smartphone className="h-5 w-5" />
+      case "trending":
+        return <TrendingUp className="h-5 w-5" />
+      default:
+        return <Eye className="h-5 w-5" />
     }
   }
 
@@ -258,7 +306,7 @@ const RequestAccessGuided = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
                           <div className="p-2 rounded-lg bg-muted">
-                            {report.icon}
+                            {getReportIcon(report.iconType)}
                           </div>
                           <div>
                             <CardTitle className="text-base font-semibold">
@@ -315,7 +363,7 @@ const RequestAccessGuided = () => {
                 <CardContent>
                   <div className="flex items-center gap-4">
                     <div className="p-3 rounded-lg bg-muted">
-                      {selectedReport.icon}
+                      {getReportIcon(selectedReport.iconType)}
                     </div>
                     <div className="flex-1">
                       <h3 className="font-semibold">{selectedReport.name}</h3>
@@ -513,12 +561,17 @@ const RequestAccessGuided = () => {
               <div className="flex gap-4">
                 <Button 
                   className="sakura-gradient text-white"
-                  onClick={() => {
-                    setFormData({...formData, reuseExistingRLS: true})
-                    setShowAdvancedRLS(false)
-                  }}
+                  onClick={handleYesReuseRLS}
+                  disabled={isYesLoading}
                 >
-                  Yes, reuse existing RLS
+                  {isYesLoading ? (
+                    <>
+                      <LoadingSpinner size="sm" className="mr-2" />
+                      Processing...
+                    </>
+                  ) : (
+                    'Yes, reuse existing RLS'
+                  )}
                 </Button>
                 <Button 
                   variant="outline"
@@ -814,43 +867,64 @@ const RequestAccessGuided = () => {
                 </CardContent>
               </Card>
 
-              <Card className="card-shadow border-red-200 bg-red-50">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
-                        <span className="text-red-600 font-bold">!</span>
+              {rlsApproverFound === false ? (
+                <Card className="card-shadow border-red-200 bg-red-50">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+                          <span className="text-red-600 font-bold">!</span>
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-red-900">No RLS Approver found</h3>
+                          <p className="text-sm text-red-800">
+                            Sakura could not find a configured approver for this dimension.
+                          </p>
+                          <p className="text-sm text-red-800 font-medium mt-1">
+                            Missing approvers must be resolved before the request can proceed.
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="font-semibold text-red-900">No RLS Approver found</h3>
-                        <p className="text-sm text-red-800">
-                          Sakura could not find a configured approver for this dimension.
-                        </p>
-                        <p className="text-sm text-red-800 font-medium mt-1">
-                          Missing approvers must be resolved before the request can proceed.
-                        </p>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => setShowEscalationModal(true)}
+                          className="text-red-700 border-red-300 hover:bg-red-50"
+                        >
+                          Escalate to Workspace Owner
+                        </Button>
+                        <Button 
+                          size="sm"
+                          onClick={handleAdjustDimensionFilters}
+                          className="sakura-gradient text-white"
+                        >
+                          Adjust dimension filters
+                        </Button>
                       </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => setShowEscalationModal(true)}
-                        className="text-red-700 border-red-300 hover:bg-red-50"
-                      >
-                        Escalate to Workspace Owner
-                      </Button>
-                      <Button 
-                        size="sm"
-                        onClick={() => setCurrentStep(3)}
-                        className="sakura-gradient text-white"
-                      >
-                        Adjust dimension filters
-                      </Button>
+                  </CardContent>
+                </Card>
+              ) : rlsApproverFound === true ? (
+                <Card className="card-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-status-approved/10 flex items-center justify-center">
+                          <span className="text-status-approved font-bold">✓</span>
+                        </div>
+                        <div>
+                          <h3 className="font-semibold">RLS Approver</h3>
+                          <p className="text-sm text-muted-foreground">
+                            This approver manages access to the selected report, app or audience
+                          </p>
+                          <p className="text-sm font-medium mt-1">Carl Smith (carl@example.de)</p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              ) : null}
             </div>
           </div>
         )
@@ -920,11 +994,11 @@ const RequestAccessGuided = () => {
                 </CardContent>
               </Card>
 
-              <div className="flex justify-center">
+              {/* <div className="flex justify-center">
                 <Button size="lg" className="sakura-gradient text-white px-8">
                   Submit Request
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         )
@@ -1082,11 +1156,20 @@ const RequestAccessGuided = () => {
                 {currentStep < 5 ? (
                   <Button 
                     onClick={handleNext}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isNextLoading || (currentStep === 4 && rlsApproverFound === false)}
                     className="sakura-gradient text-white"
                   >
-                    Next
-                    <ChevronRight className="h-4 w-4 ml-2" />
+                    {isNextLoading ? (
+                      <>
+                        <LoadingSpinner size="sm" className="mr-2" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        Next
+                        <ChevronRight className="h-4 w-4 ml-2" />
+                      </>
+                    )}
                   </Button>
                 ) : (
                   <Button 

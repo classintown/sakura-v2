@@ -31,15 +31,19 @@ const RequestAccessAdvanced = () => {
     urgency: "medium"
   })
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [showReview, setShowReview] = useState(false)
 
-  const totalSteps = 4
-  const progress = (currentStep / totalSteps) * 100
+  const totalSteps = 5 // Added review step
+  const progress = isSubmitted ? 100 : (currentStep / totalSteps) * 100
 
   const stepTitles = [
     "Access scope selection",
     "Request details",
     "RLS",
-    "Approver detection"
+    "Approver detection",
+    "Review & Submit"
   ]
 
   const workspaces = [
@@ -141,6 +145,26 @@ const RequestAccessAdvanced = () => {
   const handlePrevious = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1)
+    }
+  }
+
+  const handleReviewAndFinalize = () => {
+    setShowReview(true)
+    setCurrentStep(5)
+  }
+
+  const handleSubmitRequest = async () => {
+    setIsSubmitting(true)
+    
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      setIsSubmitted(true)
+      setCurrentStep(5)
+    } catch (error) {
+      console.error('Submission failed:', error)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -618,9 +642,148 @@ const RequestAccessAdvanced = () => {
             </div>
 
             <div className="flex justify-center">
-              <Button size="lg" className="sakura-gradient text-white px-8">
+              <Button 
+                size="lg" 
+                className="sakura-gradient text-white px-8"
+                onClick={handleReviewAndFinalize}
+              >
                 Review and finalize
               </Button>
+            </div>
+          </div>
+        )
+
+      case 5:
+        if (isSubmitted) {
+          return (
+            <div className="text-center py-8">
+              <div className="mb-6">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-semibold text-green-600 mb-2">Request successfully submitted!</h2>
+                <p className="text-muted-foreground">
+                  Your access request has been routed for approval
+                </p>
+              </div>
+
+              <Card className="card-shadow mb-6 text-left">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                      <span className="text-blue-600 font-bold text-sm">!</span>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-blue-900">Pending Line manager approval</h3>
+                      <p className="text-blue-800 text-sm">Waiting for Bob Green to review</p>
+                    </div>
+                    <StatusBadge variant="pending" className="ml-auto">Pending</StatusBadge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className="flex justify-center gap-4">
+                <Link to="/requests">
+                  <Button variant="outline">View all requests</Button>
+                </Link>
+                <Button 
+                  onClick={() => window.location.reload()} 
+                  className="sakura-gradient text-white"
+                >
+                  + New request
+                </Button>
+                <Link to="/">
+                  <Button className="sakura-gradient text-white">Back to dashboard</Button>
+                </Link>
+              </div>
+            </div>
+          )
+        }
+
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-xl font-semibold mb-2">Review & Submit</h2>
+              <p className="text-muted-foreground">
+                Review your request details before submitting
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              <Card className="card-shadow">
+                <CardHeader>
+                  <CardTitle>Request Details</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <span className="text-sm text-muted-foreground">Selected Items:</span>
+                    <div className="mt-2 space-y-2">
+                      {selectedWorkspace && <p className="font-medium">• Workspace: {selectedWorkspace.name}</p>}
+                      {selectedApp && <p className="font-medium">• App: {selectedApp.name}</p>}
+                      {selectedAudience && <p className="font-medium">• Audience: {selectedAudience.name}</p>}
+                      {selectedReport && <p className="font-medium">• Report: {selectedReport.name}</p>}
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-sm text-muted-foreground">Requested for:</span>
+                    <p className="font-medium">{formData.requestFor}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-muted-foreground">Duration:</span>
+                    <p className="font-medium">{formData.duration}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-muted-foreground">Urgency:</span>
+                    <p className="font-medium">{formData.urgency}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-muted-foreground">Business Justification:</span>
+                    <p className="font-medium">{formData.businessJustification}</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="card-shadow">
+                <CardHeader>
+                  <CardTitle>Approval Workflow</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 text-sm">
+                      <span className="text-status-approved">✓</span>
+                      <span>Line Manager (Bob Green)</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <span className="text-status-pending">⏳</span>
+                      <span>OLS Approver (Anne Real)</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <span className="text-status-pending">⏳</span>
+                      <span>RLS Approver (Jane Brown)</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className="flex justify-center">
+                <Button 
+                  size="lg" 
+                  className="sakura-gradient text-white px-8"
+                  onClick={handleSubmitRequest}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
+                      Submitting...
+                    </>
+                  ) : (
+                    'Submit Request'
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
         )
@@ -685,23 +848,23 @@ const RequestAccessAdvanced = () => {
 
           {/* Step Navigation */}
           <div className="flex items-center gap-4 mb-8">
-            {stepTitles.map((title, index) => (
+            {stepTitles.slice(0, isSubmitted ? stepTitles.length : stepTitles.length - 1).map((title, index) => (
               <div key={index} className="flex items-center gap-2">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                   index + 1 === currentStep 
                     ? 'bg-primary text-primary-foreground' 
-                    : index + 1 < currentStep
+                    : index + 1 < currentStep || isSubmitted
                     ? 'bg-status-approved text-white'
                     : 'bg-muted text-muted-foreground'
                 }`}>
-                  {index + 1 < currentStep ? '✓' : index + 1}
+                  {(index + 1 < currentStep || isSubmitted) ? '✓' : index + 1}
                 </div>
                 <span className={`text-sm font-medium ${
                   index + 1 === currentStep ? 'text-primary' : 'text-muted-foreground'
                 }`}>
                   {title}
                 </span>
-                {index < stepTitles.length - 1 && (
+                {index < (isSubmitted ? stepTitles.length - 1 : stepTitles.length - 2) && (
                   <ChevronRight className="h-4 w-4 text-muted-foreground mx-2" />
                 )}
               </div>
@@ -716,7 +879,8 @@ const RequestAccessAdvanced = () => {
           </Card>
 
           {/* Navigation Buttons */}
-          <div className="flex items-center justify-between mt-8">
+          {!isSubmitted && (
+            <div className="flex items-center justify-between mt-8">
             <div>
               {currentStep > 1 && (
                 <Button variant="outline" onClick={handlePrevious}>
@@ -731,7 +895,7 @@ const RequestAccessAdvanced = () => {
                 <Button variant="ghost">Cancel</Button>
               </Link>
               
-              {currentStep < totalSteps ? (
+              {currentStep < 4 ? (
                 <Button 
                   onClick={() => {
                     if (validateCurrentStep()) {
@@ -743,13 +907,17 @@ const RequestAccessAdvanced = () => {
                   Next
                   <ChevronRight className="h-4 w-4 ml-2" />
                 </Button>
-              ) : (
-                <Button className="sakura-gradient text-white">
-                  Submit Request
+              ) : currentStep === 4 ? (
+                <Button 
+                  onClick={handleReviewAndFinalize}
+                  className="sakura-gradient text-white"
+                >
+                  Review and finalize
                 </Button>
-              )}
+              ) : null}
             </div>
           </div>
+          )}
         </main>
       </div>
     </div>

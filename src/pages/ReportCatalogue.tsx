@@ -21,6 +21,7 @@ import { useToast } from "@/hooks/use-toast"
 import { EmptyState } from "@/components/ui/empty-state"
 import { LoadingState, LoadingOverlay } from "@/components/ui/loading-spinner"
 import { useKeyboardNavigation } from "@/hooks/use-keyboard-navigation"
+import { ReportDetailsModal } from "@/components/ui/report-details-modal"
 
 const ReportCatalogue = () => {
   const navigate = useNavigate()
@@ -35,6 +36,8 @@ const ReportCatalogue = () => {
   const [favorites, setFavorites] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [focusedReportIndex, setFocusedReportIndex] = useState(-1)
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
+  const [selectedReportForDetails, setSelectedReportForDetails] = useState<any>(null)
   const itemsPerPage = 12
 
   const allReports = [
@@ -45,7 +48,7 @@ const ReportCatalogue = () => {
       type: "SAR" as const,
       description: "This standalone report shows profit and loss by client, detailing revenue, expenses, and net income to identify profitable clients and guide decisions.",
       status: "pending" as const,
-      icon: <Eye className="h-5 w-5" />
+      iconType: "eye" as const
     },
     {
       id: "2", 
@@ -55,7 +58,7 @@ const ReportCatalogue = () => {
       type: "AUR" as const,
       description: "This report is part of the Client Leads Audience in the Marketing Analytics App. It provides insights into client profitability, resource use, and costs to support decisions.",
       status: "approved" as const,
-      icon: <Users className="h-5 w-5" />
+      iconType: "users" as const
     },
     {
       id: "3",
@@ -64,7 +67,7 @@ const ReportCatalogue = () => {
       type: "APP" as const,
       description: "This app groups multiple audiences of reports for marketing performance, client portfolio, and financial tracking. It provides a central entry point for business stakeholders to access key dashboards.",
       status: "request" as const,
-      icon: <Smartphone className="h-5 w-5" />
+      iconType: "smartphone" as const
     },
     {
       id: "4",
@@ -73,7 +76,7 @@ const ReportCatalogue = () => {
       type: "SAR" as const, 
       description: "This report shows profit and loss by client, detailing revenue, expenses, and net income to identify profitable clients and guide decisions.",
       status: "request" as const,
-      icon: <TrendingUp className="h-5 w-5" />
+      iconType: "trending" as const
     },
     {
       id: "5",
@@ -83,7 +86,7 @@ const ReportCatalogue = () => {
       type: "AUR" as const,
       description: "This audience provides a curated pack of reports focused on client profitability and resource allocation, supporting account managers with client-level insights.",
       status: "approved" as const,
-      icon: <Users className="h-5 w-5" />
+      iconType: "users" as const
     },
     {
       id: "6",
@@ -92,7 +95,7 @@ const ReportCatalogue = () => {
       type: "SAR" as const,
       description: "Comprehensive financial overview with key metrics and trends",
       status: "approved" as const,
-      icon: <TrendingUp className="h-5 w-5" />
+      iconType: "trending" as const
     },
     {
       id: "7",
@@ -102,7 +105,7 @@ const ReportCatalogue = () => {
       type: "APP" as const,
       description: "Growth metrics and performance indicators",
       status: "request" as const,
-      icon: <Smartphone className="h-5 w-5" />
+      iconType: "smartphone" as const
     }
   ]
 
@@ -153,6 +156,21 @@ const ReportCatalogue = () => {
     "customer analytics insights"
   ]
 
+  const getReportIcon = (iconType: string) => {
+    switch (iconType) {
+      case "eye":
+        return <Eye className="h-5 w-5" />
+      case "users":
+        return <Users className="h-5 w-5" />
+      case "smartphone":
+        return <Smartphone className="h-5 w-5" />
+      case "trending":
+        return <TrendingUp className="h-5 w-5" />
+      default:
+        return <Eye className="h-5 w-5" />
+    }
+  }
+
   const handleFiltersChange = async (filters: any[]) => {
     setIsLoading(true)
     
@@ -200,6 +218,32 @@ const ReportCatalogue = () => {
     navigate('/request-access-guided', { 
       state: { 
         selectedReport: report,
+        fromCatalogue: true 
+      } 
+    })
+  }
+
+  const handleViewDetails = (report: any, e: React.MouseEvent) => {
+    e.stopPropagation()
+    setSelectedReportForDetails(report)
+    setShowDetailsModal(true)
+  }
+
+  const handleRequestAccess = (report: any, e: React.MouseEvent) => {
+    e.stopPropagation()
+    navigate('/request-access-guided', { 
+      state: { 
+        selectedReport: report,
+        fromCatalogue: true 
+      } 
+    })
+  }
+
+  const handleRequestAccessFromModal = () => {
+    setShowDetailsModal(false)
+    navigate('/request-access-guided', { 
+      state: { 
+        selectedReport: selectedReportForDetails,
         fromCatalogue: true 
       } 
     })
@@ -359,7 +403,7 @@ const ReportCatalogue = () => {
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-muted">
-                          {report.icon}
+                          {getReportIcon(report.iconType)}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
@@ -410,11 +454,19 @@ const ReportCatalogue = () => {
                       </StatusBadge>
                       
                       {report.status === "request" ? (
-                        <Button variant="outline" size="sm">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={(e) => handleRequestAccess(report, e)}
+                        >
                           Request access
                         </Button>
                       ) : (
-                        <Button variant="ghost" size="sm">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={(e) => handleViewDetails(report, e)}
+                        >
                           <BookOpen className="h-4 w-4 mr-1" />
                           View details
                         </Button>
@@ -438,7 +490,7 @@ const ReportCatalogue = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4 flex-1">
                         <div className="p-2 rounded-lg bg-muted">
-                          {report.icon}
+                          {getReportIcon(report.iconType)}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
@@ -474,11 +526,19 @@ const ReportCatalogue = () => {
                           {getStatusText(report.status)}
                         </StatusBadge>
                         {report.status === "request" ? (
-                          <Button variant="outline" size="sm">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={(e) => handleRequestAccess(report, e)}
+                          >
                             Request access
                           </Button>
                         ) : (
-                          <Button variant="ghost" size="sm">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={(e) => handleViewDetails(report, e)}
+                          >
                             <BookOpen className="h-4 w-4 mr-1" />
                             View details
                           </Button>
@@ -538,6 +598,14 @@ const ReportCatalogue = () => {
           </LoadingOverlay>
         </main>
       </div>
+
+      {/* Report Details Modal */}
+      <ReportDetailsModal
+        open={showDetailsModal}
+        onOpenChange={setShowDetailsModal}
+        report={selectedReportForDetails}
+        onRequestAccess={handleRequestAccessFromModal}
+      />
     </div>
   )
 }
