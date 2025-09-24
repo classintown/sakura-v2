@@ -7,11 +7,16 @@ import { Input } from "@/components/ui/input"
 import { StatusBadge } from "@/components/ui/status-badge"
 import { AccessCard } from "@/components/dashboard/access-card"
 import { NotificationCard } from "@/components/dashboard/notification-card"
-import { Search, Wand2, Settings } from "lucide-react"
+import { AccessDetailsModal } from "@/components/ui/access-details-modal"
+import { NotificationDetailsModal } from "@/components/ui/notification-details-modal"
+import { Search, Wand2, Settings, Filter, Eye } from "lucide-react"
 import { Link } from "react-router-dom"
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("")
+  const [selectedAccess, setSelectedAccess] = useState<any>(null)
+  const [selectedNotification, setSelectedNotification] = useState<any>(null)
+  const [modalType, setModalType] = useState<"ols" | "rls">("ols")
 
   // Mock data - in real app this would come from API
   const olsAccess = [
@@ -172,7 +177,14 @@ const Index = () => {
               </div>
               <div className="space-y-3">
                 {olsAccess.map((item) => (
-                  <AccessCard key={item.id} item={item} />
+                  <AccessCard 
+                    key={item.id} 
+                    item={item} 
+                    onViewDetails={() => {
+                      setSelectedAccess(item)
+                      setModalType("ols")
+                    }}
+                  />
                 ))}
               </div>
             </div>
@@ -211,9 +223,21 @@ const Index = () => {
                           </span>
                         ))}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        Approved by: {item.approvedBy}
-                      </p>
+                      <div className="flex items-center justify-between mt-2">
+                        <p className="text-xs text-muted-foreground">
+                          Approved by: {item.approvedBy}
+                        </p>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => {
+                            setSelectedAccess({...item, dataset: "Growth Insights", market: "Germany", serviceLine: "Media", client: "Mercedes"})
+                            setModalType("rls")
+                          }}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
@@ -227,7 +251,9 @@ const Index = () => {
               </div>
               <div className="space-y-3">
                 {notifications.map((notification) => (
-                  <NotificationCard key={notification.id} notification={notification} />
+                  <div key={notification.id} onClick={() => setSelectedNotification(notification)}>
+                    <NotificationCard notification={notification} />
+                  </div>
                 ))}
               </div>
             </div>
@@ -279,6 +305,20 @@ const Index = () => {
               </CardContent>
             </Card>
           </div>
+
+          {/* Modals */}
+          <AccessDetailsModal
+            open={!!selectedAccess}
+            onOpenChange={(open) => !open && setSelectedAccess(null)}
+            accessItem={selectedAccess}
+            type={modalType}
+          />
+          
+          <NotificationDetailsModal
+            open={!!selectedNotification}
+            onOpenChange={(open) => !open && setSelectedNotification(null)}
+            notification={selectedNotification}
+          />
         </main>
       </div>
     </div>

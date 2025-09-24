@@ -6,11 +6,18 @@ import { Input } from "@/components/ui/input"
 import { StatusBadge } from "@/components/ui/status-badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Search } from "lucide-react"
+import { FilterDropdown } from "@/components/ui/filter-dropdown"
+import { AccessDetailsModal } from "@/components/ui/access-details-modal"
+import { Search, Filter, Download, Eye } from "lucide-react"
 import { AccessCard } from "@/components/dashboard/access-card"
 
 const MyAccess = () => {
   const [searchQuery, setSearchQuery] = useState("")
+  const [selectedAccess, setSelectedAccess] = useState<any>(null)
+  const [modalType, setModalType] = useState<"ols" | "rls">("ols")
+  const [sortBy, setSortBy] = useState("name")
+  const [filterType, setFilterType] = useState<string[]>([])
+  const [filterStatus, setFilterStatus] = useState<string[]>([])
   
   const olsAccess = [
     {
@@ -76,15 +83,43 @@ const MyAccess = () => {
         />
         
         <main className="flex-1 overflow-y-auto p-6">
-          {/* Search */}
-          <div className="relative mb-6">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search by name or workspace"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 max-w-md"
+          {/* Search and Filters */}
+          <div className="flex items-center gap-4 mb-6">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by name or workspace"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <FilterDropdown
+              title="Sort by"
+              options={[
+                { value: "name", label: "Name A-Z" },
+                { value: "workspace", label: "Workspace" },
+                { value: "type", label: "Type" },
+                { value: "status", label: "Status" }
+              ]}
+              selectedValues={[sortBy]}
+              onSelectionChange={(values) => setSortBy(values[0] || "name")}
             />
+            <FilterDropdown
+              title="Type"
+              options={[
+                { value: "SAR", label: "SAR Report" },
+                { value: "APP", label: "Application" },
+                { value: "AUR", label: "AUR Report" }
+              ]}
+              selectedValues={filterType}
+              onSelectionChange={setFilterType}
+              multiSelect
+            />
+            <Button variant="outline" size="sm">
+              <Download className="h-4 w-4 mr-2" />
+              Export
+            </Button>
           </div>
 
           {/* Tabs */}
@@ -156,10 +191,21 @@ const MyAccess = () => {
                           ))}
                         </div>
                         
-                        <div className="mt-3 pt-3 border-t border-border">
+                        <div className="mt-3 pt-3 border-t border-border flex items-center justify-between">
                           <span className="text-muted-foreground text-xs">
                             Approved by: {item.approvedBy}
                           </span>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => {
+                              setSelectedAccess(item)
+                              setModalType("rls")
+                            }}
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            Details
+                          </Button>
                         </div>
                       </div>
                     </CardContent>
@@ -168,6 +214,13 @@ const MyAccess = () => {
               </div>
             </TabsContent>
           </Tabs>
+          {/* Access Details Modal */}
+          <AccessDetailsModal
+            open={!!selectedAccess}
+            onOpenChange={(open) => !open && setSelectedAccess(null)}
+            accessItem={selectedAccess}
+            type={modalType}
+          />
         </main>
       </div>
     </div>

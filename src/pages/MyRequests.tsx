@@ -16,7 +16,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-import { Calendar, Clock, Filter, Download } from "lucide-react"
+import { ApprovalWorkflowModal } from "@/components/ui/approval-workflow-modal"
+import { BulkActionsModal } from "@/components/ui/bulk-actions-modal"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Calendar, Clock, Filter, Download, Users, CheckCircle } from "lucide-react"
 
 const MyRequests = () => {
   const [searchQuery, setSearchQuery] = useState("")
@@ -25,6 +28,11 @@ const MyRequests = () => {
   const [sortBy, setSortBy] = useState("newest")
   const [statusFilter, setStatusFilter] = useState<string[]>([])
   const [typeFilter, setTypeFilter] = useState<string[]>([])
+  const [selectedRequests, setSelectedRequests] = useState<string[]>([])
+  const [showWorkflowModal, setShowWorkflowModal] = useState(false)
+  const [workflowRequest, setWorkflowRequest] = useState<any>(null)
+  const [showBulkModal, setShowBulkModal] = useState(false)
+  const [bulkAction, setBulkAction] = useState<"approve" | "reject" | "export" | "withdraw">("export")
   const itemsPerPage = 10
   
   const requests = [
@@ -184,10 +192,31 @@ const MyRequests = () => {
                 selectedValues={[sortBy]}
                 onSelectionChange={(values) => setSortBy(values[0] || "newest")}
               />
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  setBulkAction("export")
+                  setShowBulkModal(true)
+                }}
+                disabled={selectedRequests.length === 0}
+              >
                 <Download className="h-4 w-4 mr-2" />
-                Export
+                Export {selectedRequests.length > 0 && `(${selectedRequests.length})`}
               </Button>
+              {selectedRequests.length > 0 && (
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => {
+                    setBulkAction("approve")
+                    setShowBulkModal(true)
+                  }}
+                >
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Bulk Actions
+                </Button>
+              )}
             </div>
             <div className="text-sm text-muted-foreground">
               {filteredRequests.length} requests found
@@ -209,6 +238,18 @@ const MyRequests = () => {
                     <table className="w-full">
                       <thead className="border-b border-border bg-muted/30">
                         <tr className="text-left">
+                          <th className="px-6 py-4 font-medium text-sm">
+                            <Checkbox
+                              checked={selectedRequests.length === paginatedRequests.length}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  setSelectedRequests(paginatedRequests.map(r => r.id))
+                                } else {
+                                  setSelectedRequests([])
+                                }
+                              }}
+                            />
+                          </th>
                           <th className="px-6 py-4 font-medium text-sm">Name</th>
                           <th className="px-6 py-4 font-medium text-sm">Workspace</th>
                           <th className="px-6 py-4 font-medium text-sm">Requested for</th>
@@ -221,6 +262,18 @@ const MyRequests = () => {
                       <tbody>
                         {paginatedRequests.map((request) => (
                           <tr key={request.id} className="border-b border-border hover:bg-muted/20 transition-colors">
+                            <td className="px-6 py-6">
+                              <Checkbox
+                                checked={selectedRequests.includes(request.id)}
+                                onCheckedChange={(checked) => {
+                                  if (checked) {
+                                    setSelectedRequests([...selectedRequests, request.id])
+                                  } else {
+                                    setSelectedRequests(selectedRequests.filter(id => id !== request.id))
+                                  }
+                                }}
+                              />
+                            </td>
                             <td className="px-6 py-6">
                               <div className="flex items-center gap-2">
                                 <span className="font-medium">{request.name}</span>
@@ -281,13 +334,25 @@ const MyRequests = () => {
                               </div>
                             </td>
                             <td className="px-6 py-6">
-                              <Button 
-                                variant="ghost" 
-                                size="sm"
-                                onClick={() => setSelectedRequest(request)}
-                              >
-                                View details
-                              </Button>
+                              <div className="flex gap-2">
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm"
+                                  onClick={() => setSelectedRequest(request)}
+                                >
+                                  View details
+                                </Button>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm"
+                                  onClick={() => {
+                                    setWorkflowRequest(request)
+                                    setShowWorkflowModal(true)
+                                  }}
+                                >
+                                  Workflow
+                                </Button>
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -348,11 +413,24 @@ const MyRequests = () => {
             </TabsContent>
           </Tabs>
 
-          {/* Request Details Modal */}
+          {/* Modals */}
           <RequestDetailsModal
             open={!!selectedRequest}
             onOpenChange={(open) => !open && setSelectedRequest(null)}
             request={selectedRequest || requests[0]}
+          />
+          
+          <ApprovalWorkflowModal
+            open={showWorkflowModal}
+            onOpenChange={setShowWorkflowModal}
+            request={workflowRequest}
+          />
+          
+          <BulkActionsModal
+            open={showBulkModal}
+            onOpenChange={setShowBulkModal}
+            selectedItems={requests.filter(r => selectedRequests.includes(r.id))}
+            actionType={bulkAction}
           />
         </main>
       </div>
