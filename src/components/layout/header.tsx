@@ -1,4 +1,4 @@
-import { Bell, User } from "lucide-react"
+import { Bell, User, Settings, LogOut, UserCircle, HelpCircle, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useToast } from "@/hooks/use-toast"
 
 interface HeaderProps {
   title: string
@@ -16,6 +17,37 @@ interface HeaderProps {
 }
 
 export function Header({ title, description }: HeaderProps) {
+  const { toast } = useToast()
+
+  const handleMenuAction = (action: string) => {
+    switch (action) {
+      case 'profile':
+        toast({
+          title: "Profile",
+          description: "Profile settings would open here.",
+        })
+        break
+      case 'settings':
+        toast({
+          title: "Settings",
+          description: "Application settings would open here.",
+        })
+        break
+      case 'help':
+        toast({
+          title: "Help & Support",
+          description: "Help documentation would open here.",
+        })
+        break
+      case 'logout':
+        toast({
+          title: "Logged out",
+          description: "You have been successfully logged out.",
+        })
+        break
+    }
+  }
+
   return (
     <header className="flex items-center justify-between border-b border-border bg-card px-6 py-4">
       <div>
@@ -26,12 +58,6 @@ export function Header({ title, description }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-4">
-        {/* Notifications */}
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-primary"></span>
-        </Button>
-
         {/* User Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -54,15 +80,22 @@ export function Header({ title, description }: HeaderProps) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              Profile
+            <DropdownMenuItem onClick={() => handleMenuAction('profile')}>
+              <UserCircle className="mr-2 h-4 w-4" />
+              <span>Profile</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              Settings
+            <DropdownMenuItem onClick={() => handleMenuAction('settings')}>
+              <Settings className="mr-2 h-4 w-4" />
+              <span>Settings</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleMenuAction('help')}>
+              <HelpCircle className="mr-2 h-4 w-4" />
+              <span>Help & Support</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              Log out
+            <DropdownMenuItem onClick={() => handleMenuAction('logout')} className="text-red-600">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

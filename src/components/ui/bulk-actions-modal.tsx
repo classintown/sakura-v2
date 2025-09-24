@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Check, X, Clock, Download, FileText } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 interface BulkActionsModalProps {
   open: boolean
@@ -17,6 +18,7 @@ interface BulkActionsModalProps {
 }
 
 export function BulkActionsModal({ open, onOpenChange, selectedItems, actionType }: BulkActionsModalProps) {
+  const { toast } = useToast()
   const [comment, setComment] = useState("")
   const [exportFormat, setExportFormat] = useState("csv")
 
@@ -55,6 +57,20 @@ export function BulkActionsModal({ open, onOpenChange, selectedItems, actionType
     console.log(`Performing ${actionType} on:`, selectedItems)
     if (comment) console.log("Comment:", comment)
     if (actionType === "export") console.log("Export format:", exportFormat)
+    
+    // Show success toast
+    const actionMessages = {
+      approve: `Successfully approved ${selectedItems.length} request${selectedItems.length !== 1 ? 's' : ''}`,
+      reject: `Successfully rejected ${selectedItems.length} request${selectedItems.length !== 1 ? 's' : ''}`,
+      export: `Successfully exported ${selectedItems.length} item${selectedItems.length !== 1 ? 's' : ''} as ${exportFormat.toUpperCase()}`,
+      withdraw: `Successfully withdrew ${selectedItems.length} request${selectedItems.length !== 1 ? 's' : ''}`
+    }
+    
+    toast({
+      title: "Action completed",
+      description: actionMessages[actionType],
+    })
+    
     onOpenChange(false)
   }
 

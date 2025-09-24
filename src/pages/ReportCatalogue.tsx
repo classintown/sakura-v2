@@ -15,9 +15,16 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-import { Search, Eye, Users, Smartphone, TrendingUp, Grid, List, Star, BookOpen } from "lucide-react"
+import { Search, Eye, Users, Smartphone, TrendingUp, Grid, List, Star, BookOpen, FileSearch } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import { useToast } from "@/hooks/use-toast"
+import { EmptyState } from "@/components/ui/empty-state"
+import { LoadingState, LoadingOverlay } from "@/components/ui/loading-spinner"
+import { useKeyboardNavigation } from "@/hooks/use-keyboard-navigation"
 
 const ReportCatalogue = () => {
+  const navigate = useNavigate()
+  const { toast } = useToast()
   const [searchQuery, setSearchQuery] = useState("Client")
   const [sortBy, setSortBy] = useState("recently-updated")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -26,6 +33,8 @@ const ReportCatalogue = () => {
   const [statusFilter, setStatusFilter] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [favorites, setFavorites] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [focusedReportIndex, setFocusedReportIndex] = useState(-1)
   const itemsPerPage = 12
 
   const allReports = [
@@ -144,21 +153,56 @@ const ReportCatalogue = () => {
     "customer analytics insights"
   ]
 
-  const handleFiltersChange = (filters: any[]) => {
+  const handleFiltersChange = async (filters: any[]) => {
+    setIsLoading(true)
+    
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 800))
+    
     const workspaceF = filters.find(f => f.id === "workspace")
     const typeF = filters.find(f => f.id === "type")
     const statusF = filters.find(f => f.id === "status")
     if (workspaceF) setWorkspaceFilter(workspaceF.value)
     if (typeF) setTypeFilter(typeF.value)
     if (statusF) setStatusFilter(statusF.value)
+    
+    setIsLoading(false)
+  }
+
+  const handleSearchChange = async (query: string) => {
+    setSearchQuery(query)
+    if (query !== searchQuery) {
+      setIsLoading(true)
+      // Simulate search API delay
+      await new Promise(resolve => setTimeout(resolve, 600))
+      setIsLoading(false)
+    }
   }
 
   const toggleFavorite = (reportId: string) => {
+    const report = allReports.find(r => r.id === reportId)
+    const isAdding = !favorites.includes(reportId)
+    
     setFavorites(prev => 
       prev.includes(reportId) 
         ? prev.filter(id => id !== reportId)
         : [...prev, reportId]
     )
+    
+    toast({
+      title: isAdding ? "Added to favorites" : "Removed from favorites",
+      description: `${report?.name} has been ${isAdding ? 'added to' : 'removed from'} your favorites.`,
+    })
+  }
+
+  const handleReportClick = (report: any) => {
+    // Navigate to guided request flow with the selected report
+    navigate('/request-access-guided', { 
+      state: { 
+        selectedReport: report,
+        fromCatalogue: true 
+      } 
+    })
   }
 
   const filteredReports = allReports.filter(report => {
@@ -176,6 +220,27 @@ const ReportCatalogue = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   )
+
+  // Keyboard navigation
+  useKeyboardNavigation({
+    onArrowDown: () => {
+      setFocusedReportIndex(prev => 
+        prev < paginatedReports.length - 1 ? prev + 1 : prev
+      )
+    },
+    onArrowUp: () => {
+      setFocusedReportIndex(prev => prev > 0 ? prev - 1 : prev)
+    },
+    onEnter: () => {
+      if (focusedReportIndex >= 0 && focusedReportIndex < paginatedReports.length) {
+        handleReportClick(paginatedReports[focusedReportIndex])
+      }
+    },
+    onEscape: () => {
+      setFocusedReportIndex(-1)
+    },
+    enabled: paginatedReports.length > 0 && !isLoading
+  })
 
   const getStatusText = (status: string) => {
     switch (status) {
@@ -209,7 +274,7 @@ const ReportCatalogue = () => {
           {/* Enhanced Search */}
           <AdvancedSearch
             searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
+            onSearchChange={handleSearchChange}
             filters={searchFilters}
             onFiltersChange={handleFiltersChange}
             suggestions={suggestions}
@@ -260,10 +325,36 @@ const ReportCatalogue = () => {
           </div>
 
           {/* Results Display */}
-          {viewMode === "grid" ? (
+          <LoadingOverlay isLoading={isLoading} loadingText="Searching reports...">
+            {paginatedReports.length === 0 ? (
+            <EmptyState
+              icon={FileSearch}
+              title="No reports found"
+              description={searchQuery || workspaceFilter.length > 0 || typeFilter.length > 0 || statusFilter.length > 0 
+                ? "No reports match your current search and filter criteria. Try adjusting your filters or search terms."
+                : "No reports are available in the catalogue at this time."
+              }
+              action={{
+                label: "Clear Filters",
+                onClick: () => {
+                  setSearchQuery("")
+                  setWorkspaceFilter([])
+                  setTypeFilter([])
+                  setStatusFilter([])
+                },
+                variant: "outline"
+              }}
+            />
+          ) : viewMode === "grid" ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {paginatedReports.map((report) => (
-                <Card key={report.id} className="card-shadow hover:elevated-shadow transition-all duration-200 cursor-pointer group">
+              {paginatedReports.map((report, index) => (
+                <Card 
+                  key={report.id} 
+                  className={`card-shadow hover:elevated-shadow transition-all duration-200 cursor-pointer group ${
+                    focusedReportIndex === index ? 'ring-2 ring-primary ring-offset-2' : ''
+                  }`}
+                  onClick={() => handleReportClick(report)}
+                >
                   <CardHeader className="pb-4">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
@@ -278,7 +369,10 @@ const ReportCatalogue = () => {
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => toggleFavorite(report.id)}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                toggleFavorite(report.id)
+                              }}
                               className="h-6 w-6 p-0"
                             >
                               <Star className={`h-4 w-4 ${favorites.includes(report.id) ? 'fill-primary text-primary' : 'text-muted-foreground'}`} />
@@ -332,8 +426,14 @@ const ReportCatalogue = () => {
             </div>
           ) : (
             <div className="space-y-4">
-              {paginatedReports.map((report) => (
-                <Card key={report.id} className="card-shadow hover:elevated-shadow transition-all duration-200">
+              {paginatedReports.map((report, index) => (
+                <Card 
+                  key={report.id} 
+                  className={`card-shadow hover:elevated-shadow transition-all duration-200 cursor-pointer ${
+                    focusedReportIndex === index ? 'ring-2 ring-primary ring-offset-2' : ''
+                  }`}
+                  onClick={() => handleReportClick(report)}
+                >
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4 flex-1">
@@ -354,7 +454,10 @@ const ReportCatalogue = () => {
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => toggleFavorite(report.id)}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                toggleFavorite(report.id)
+                              }}
                               className="h-6 w-6 p-0 ml-auto"
                             >
                               <Star className={`h-4 w-4 ${favorites.includes(report.id) ? 'fill-primary text-primary' : 'text-muted-foreground'}`} />
@@ -432,6 +535,7 @@ const ReportCatalogue = () => {
               </Pagination>
             </div>
           )}
+          </LoadingOverlay>
         </main>
       </div>
     </div>

@@ -19,9 +19,12 @@ import {
 import { ApprovalWorkflowModal } from "@/components/ui/approval-workflow-modal"
 import { BulkActionsModal } from "@/components/ui/bulk-actions-modal"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Calendar, Clock, Filter, Download, Users, CheckCircle } from "lucide-react"
+import { Calendar, Clock, Filter, Download, Users, CheckCircle, Shield, FileText } from "lucide-react"
+import { EmptyState } from "@/components/ui/empty-state"
+import { useNavigate } from "react-router-dom"
 
 const MyRequests = () => {
+  const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedRequest, setSelectedRequest] = useState<any>(null)
   const [currentPage, setCurrentPage] = useState(1)
@@ -143,13 +146,28 @@ const MyRequests = () => {
     if (typeF) setTypeFilter(typeF.value)
   }
 
-  const filteredRequests = requests.filter(request => {
-    const matchesSearch = request.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         request.workspace.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesStatus = statusFilter.length === 0 || statusFilter.includes(request.status)
-    const matchesType = typeFilter.length === 0 || typeFilter.includes(request.type)
-    return matchesSearch && matchesStatus && matchesType
-  })
+  const filteredRequests = requests
+    .filter(request => {
+      const matchesSearch = request.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           request.workspace.toLowerCase().includes(searchQuery.toLowerCase())
+      const matchesStatus = statusFilter.length === 0 || statusFilter.includes(request.status)
+      const matchesType = typeFilter.length === 0 || typeFilter.includes(request.type)
+      return matchesSearch && matchesStatus && matchesType
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "newest":
+          return new Date(b.requestDate).getTime() - new Date(a.requestDate).getTime()
+        case "oldest":
+          return new Date(a.requestDate).getTime() - new Date(b.requestDate).getTime()
+        case "name":
+          return a.name.localeCompare(b.name)
+        case "status":
+          return a.status.localeCompare(b.status)
+        default:
+          return 0
+      }
+    })
 
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage)
   const paginatedRequests = filteredRequests.slice(
@@ -397,19 +415,27 @@ const MyRequests = () => {
             </TabsContent>
 
             <TabsContent value="ols" className="mt-6">
-              <Card className="card-shadow">
-                <CardContent className="p-8 text-center text-muted-foreground">
-                  <p>No OLS requests found</p>
-                </CardContent>
-              </Card>
+              <EmptyState
+                icon={FileText}
+                title="No OLS requests found"
+                description="You haven't made any Object-Level Security access requests yet. OLS requests control access to specific reports, apps, and workspaces."
+                action={{
+                  label: "Request OLS Access",
+                  onClick: () => navigate('/request-access-guided')
+                }}
+              />
             </TabsContent>
 
             <TabsContent value="rls" className="mt-6">
-              <Card className="card-shadow">
-                <CardContent className="p-8 text-center text-muted-foreground">
-                  <p>No RLS requests found</p>
-                </CardContent>
-              </Card>
+              <EmptyState
+                icon={Shield}
+                title="No RLS requests found"
+                description="You haven't made any Row-Level Security access requests yet. RLS requests control access to specific data rows based on your role and permissions."
+                action={{
+                  label: "Request RLS Access",
+                  onClick: () => navigate('/request-access-advanced')
+                }}
+              />
             </TabsContent>
           </Tabs>
 
