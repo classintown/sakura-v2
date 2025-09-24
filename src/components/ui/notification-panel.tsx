@@ -65,7 +65,7 @@ export function NotificationPanel() {
           />
           
           {/* Panel */}
-          <div className="absolute right-0 top-full mt-2 w-80 bg-background border border-border rounded-lg shadow-elevated z-50">
+          <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-background border border-border rounded-lg shadow-elevated z-50 translate-x-[calc(100%-2rem)] max-w-[calc(100vw-1rem)] sm:translate-x-[calc(100%-1rem)]">
             <div className="p-4 border-b border-border">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold">Notifications</h3>
