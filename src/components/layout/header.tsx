@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { ThemeSwitcher } from "@/components/ui/theme-switcher"
 import { useToast } from "@/hooks/use-toast"
 
 interface HeaderProps {
@@ -58,6 +59,9 @@ export function Header({ title, description }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-4">
+        {/* Theme Switcher */}
+        <ThemeSwitcher />
+        
         {/* User Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

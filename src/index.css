@@ -60,6 +60,19 @@
 
     --radius: 0.5rem;
 
+    /* Configurable Border & Shadow System */
+    --border-width: 1px;
+    --border-radius-sm: 0.25rem;
+    --border-radius-md: 0.375rem;
+    --border-radius-lg: 0.5rem;
+    --border-radius-xl: 0.75rem;
+    
+    /* Shadow Intensity Levels */
+    --shadow-sm: 0 1px 2px 0 hsl(210 11% 15% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(210 11% 15% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(210 11% 15% / 0.1);
+    --shadow-xl: 0 20px 25px -5px hsl(210 11% 15% / 0.1);
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -124,6 +137,411 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Sakura Theme (Default) */
+  html[data-theme="sakura"] {
+    /* Uses the default :root values */
+  }
+
+  html[data-theme="sakura"].dark {
+    /* Uses the default .dark values */
+  }
+
+  /* Corporate Blue Theme */
+  html[data-theme="corporate"] {
+    --background: 0 0% 100% !important;
+    --foreground: 210 11% 15% !important;
+
+    --card: 0 0% 100% !important;
+    --card-foreground: 210 11% 15% !important;
+
+    --popover: 0 0% 100% !important;
+    --popover-foreground: 210 11% 15% !important;
+
+    /* Corporate Blue Primary - Your Custom Blue */
+    --primary: 221.35 78.78% 48.04% !important;
+    --primary-foreground: 0 0% 100% !important;
+    --primary-light: 221.35 78.78% 58.04% !important;
+    --primary-dark: 221.35 78.78% 38.04% !important;
+
+    /* Steel Secondary */
+    --secondary: 210 40% 96.1% !important;
+    --secondary-foreground: 210 11% 15% !important;
+
+    --muted: 210 40% 96.1% !important;
+    --muted-foreground: 215 15% 50% !important;
+
+    --accent: 210 40% 96.1% !important;
+    --accent-foreground: 210 11% 15% !important;
+
+    --destructive: 0 84.2% 60.2% !important;
+    --destructive-foreground: 0 0% 100% !important;
+
+    /* Corporate Blue Borders & Inputs */
+    --border: 221.35 78.78% 85% !important;
+    --input: 221.35 78.78% 92% !important;
+    --ring: 221.35 78.78% 48.04% !important;
+
+    /* Corporate Gradients */
+    --gradient-sakura: linear-gradient(135deg, hsl(221.35, 78.78%, 48.04%) 0%, hsl(221.35, 70%, 55%) 100%);
+    --gradient-sakura-light: linear-gradient(135deg, hsl(221.35, 78.78%, 58.04%) 0%, hsl(221.35, 70%, 65%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(221.35, 40%, 98%) 100%);
+
+    /* Corporate Blue Shadows */
+    --shadow-sakura: 0 10px 30px -10px hsl(221.35 78.78% 48.04% / 0.3);
+    --shadow-card: 0 4px 12px -4px hsl(221.35 78.78% 48.04% / 0.15);
+    --shadow-elevated: 0 8px 25px -8px hsl(221.35 78.78% 48.04% / 0.2);
+
+    /* Corporate Blue Configurable Borders & Shadows */
+    --border-width: 1px;
+    --border-radius-sm: 0.375rem;
+    --border-radius-md: 0.5rem;
+    --border-radius-lg: 0.75rem;
+    --border-radius-xl: 1rem;
+    
+    /* Corporate Blue Shadow System */
+    --shadow-sm: 0 1px 3px 0 hsl(221.35 78.78% 48.04% / 0.12);
+    --shadow-md: 0 4px 8px -2px hsl(221.35 78.78% 48.04% / 0.18);
+    --shadow-lg: 0 10px 20px -5px hsl(221.35 78.78% 48.04% / 0.25);
+    --shadow-xl: 0 20px 30px -10px hsl(221.35 78.78% 48.04% / 0.3);
+
+    /* Corporate Blue Sidebar */
+    --sidebar-background: 221.35 40% 98%;
+    --sidebar-foreground: 221.35 20% 20%;
+    --sidebar-primary: 221.35 78.78% 48.04%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 221.35 40% 95%;
+    --sidebar-accent-foreground: 221.35 20% 20%;
+    --sidebar-border: 221.35 78.78% 85%;
+    --sidebar-ring: 221.35 78.78% 48.04%;
+  }
+
+  html[data-theme="corporate"].dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Corporate Blue Primary - Your Custom Blue (Dark Mode) */
+    --primary: 221.35 78.78% 58.04%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 221.35 78.78% 68.04%;
+    --primary-dark: 221.35 78.78% 48.04%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Corporate Blue Dark Borders & Inputs */
+    --border: 221.35 40% 25%;
+    --input: 221.35 40% 20%;
+    --ring: 221.35 78.78% 58.04%;
+
+    /* Corporate Blue Dark Gradients */
+    --gradient-sakura: linear-gradient(135deg, hsl(220, 84%, 58%) 0%, hsl(220, 70%, 60%) 100%);
+    --gradient-sakura-light: linear-gradient(135deg, hsl(220, 84%, 68%) 0%, hsl(220, 70%, 70%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(222.2, 84%, 4.9%) 0%, hsl(220, 40%, 15%) 100%);
+
+    /* Corporate Blue Dark Shadows */
+    --shadow-sakura: 0 10px 30px -10px hsl(220 84% 58% / 0.4);
+    --shadow-card: 0 4px 12px -4px hsl(220 84% 58% / 0.15);
+    --shadow-elevated: 0 8px 25px -8px hsl(220 84% 58% / 0.25);
+
+    /* Corporate Blue Dark Configurable Borders & Shadows */
+    --border-width: 1px;
+    --border-radius-sm: 0.375rem;
+    --border-radius-md: 0.5rem;
+    --border-radius-lg: 0.75rem;
+    --border-radius-xl: 1rem;
+    
+    /* Corporate Blue Dark Shadow System */
+    --shadow-sm: 0 2px 4px 0 hsl(220 84% 58% / 0.15);
+    --shadow-md: 0 6px 12px -2px hsl(220 84% 58% / 0.2);
+    --shadow-lg: 0 12px 24px -6px hsl(220 84% 58% / 0.25);
+    --shadow-xl: 0 24px 36px -12px hsl(220 84% 58% / 0.3);
+
+    /* Corporate Blue Dark Sidebar */
+    --sidebar-background: 220 40% 8%;
+    --sidebar-foreground: 220 20% 85%;
+    --sidebar-primary: 220 84% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 40% 15%;
+    --sidebar-accent-foreground: 220 20% 85%;
+    --sidebar-border: 220 40% 25%;
+    --sidebar-ring: 220 84% 58%;
+  }
+
+  /* Lavender Theme */
+  html[data-theme="lavender"] {
+    --background: 0 0% 100%;
+    --foreground: 210 11% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 11% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 11% 15%;
+
+    /* Light Purple Primary */
+    --primary: 263 70% 50%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 263 70% 60%;
+    --primary-dark: 263 70% 40%;
+
+    /* Soft Purple Secondary */
+    --secondary: 263 30% 96%;
+    --secondary-foreground: 210 11% 15%;
+
+    --muted: 263 30% 96%;
+    --muted-foreground: 215 15% 50%;
+
+    --accent: 280 60% 85%;
+    --accent-foreground: 263 70% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 263 20% 90%;
+    --input: 263 20% 90%;
+    --ring: 263 70% 50%;
+
+    /* Lavender Gradients */
+    --gradient-sakura: linear-gradient(135deg, hsl(263, 70%, 50%) 0%, hsl(280, 60%, 60%) 100%);
+    --gradient-sakura-light: linear-gradient(135deg, hsl(263, 70%, 60%) 0%, hsl(280, 60%, 70%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(263, 30%, 98%) 100%);
+
+    /* Shadows */
+    --shadow-sakura: 0 10px 30px -10px hsl(263 70% 50% / 0.3);
+    --shadow-card: 0 2px 8px -2px hsl(210 11% 15% / 0.08);
+    --shadow-elevated: 0 8px 25px -8px hsl(210 11% 15% / 0.15);
+
+    --sidebar-background: 263 30% 98%;
+    --sidebar-foreground: 263 20% 20%;
+    --sidebar-primary: 263 70% 50%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 263 30% 95%;
+    --sidebar-accent-foreground: 263 20% 20%;
+    --sidebar-border: 263 20% 90%;
+    --sidebar-ring: 263 70% 50%;
+  }
+
+  html[data-theme="lavender"].dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 263 70% 60%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 263 70% 70%;
+    --primary-dark: 263 70% 50%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 280 60% 70%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 263 70% 60%;
+
+    --gradient-sakura: linear-gradient(135deg, hsl(263, 70%, 60%) 0%, hsl(280, 60%, 70%) 100%);
+    --gradient-sakura-light: linear-gradient(135deg, hsl(263, 70%, 70%) 0%, hsl(280, 60%, 80%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(222.2, 84%, 4.9%) 0%, hsl(217.2, 32.6%, 17.5%) 100%);
+
+    --shadow-sakura: 0 10px 30px -10px hsl(263 70% 60% / 0.5);
+    --shadow-card: 0 2px 8px -2px hsl(0 0% 0% / 0.3);
+    --shadow-elevated: 0 8px 25px -8px hsl(0 0% 0% / 0.4);
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 263 70% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 263 70% 60%;
+  }
+
+  /* Midnight Theme */
+  html[data-theme="midnight"] {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Purple Primary */
+    --primary: 263 70% 50%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 263 70% 60%;
+    --primary-dark: 263 70% 40%;
+
+    /* Dark Secondary */
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 263 70% 50%;
+
+    /* Midnight Gradients */
+    --gradient-sakura: linear-gradient(135deg, hsl(263, 70%, 50%) 0%, hsl(280, 60%, 60%) 100%);
+    --gradient-sakura-light: linear-gradient(135deg, hsl(263, 70%, 60%) 0%, hsl(280, 60%, 70%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(240, 10%, 3.9%) 0%, hsl(240, 3.7%, 15.9%) 100%);
+
+    /* Shadows */
+    --shadow-sakura: 0 10px 30px -10px hsl(263 70% 50% / 0.5);
+    --shadow-card: 0 2px 8px -2px hsl(0 0% 0% / 0.5);
+    --shadow-elevated: 0 8px 25px -8px hsl(0 0% 0% / 0.6);
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 263 70% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 263 70% 50%;
+  }
+
+  /* Neutral Theme */
+  html[data-theme="neutral"] {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    /* Neutral Gray Primary */
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --primary-light: 240 5.9% 20%;
+    --primary-dark: 240 5.9% 5%;
+
+    /* Light Gray Secondary */
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+
+    /* Neutral Gradients */
+    --gradient-sakura: linear-gradient(135deg, hsl(240, 5.9%, 10%) 0%, hsl(240, 3.8%, 46.1%) 100%);
+    --gradient-sakura-light: linear-gradient(135deg, hsl(240, 5.9%, 20%) 0%, hsl(240, 3.8%, 56.1%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(240, 4.8%, 95.9%) 100%);
+
+    /* Shadows */
+    --shadow-sakura: 0 10px 30px -10px hsl(240 5.9% 10% / 0.3);
+    --shadow-card: 0 2px 8px -2px hsl(240 10% 3.9% / 0.08);
+    --shadow-elevated: 0 8px 25px -8px hsl(240 10% 3.9% / 0.15);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 240 5.9% 90%;
+    --sidebar-ring: 240 5.9% 10%;
+  }
+
+  html[data-theme="neutral"].dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --primary-light: 0 0% 88%;
+    --primary-dark: 0 0% 78%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 0 0% 98%;
+
+    --gradient-sakura: linear-gradient(135deg, hsl(0, 0%, 98%) 0%, hsl(240, 5%, 64.9%) 100%);
+    --gradient-sakura-light: linear-gradient(135deg, hsl(0, 0%, 88%) 0%, hsl(240, 5%, 74.9%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(240, 10%, 3.9%) 0%, hsl(240, 3.7%, 15.9%) 100%);
+
+    --shadow-sakura: 0 10px 30px -10px hsl(0 0% 98% / 0.3);
+    --shadow-card: 0 2px 8px -2px hsl(0 0% 0% / 0.5);
+    --shadow-elevated: 0 8px 25px -8px hsl(0 0% 0% / 0.6);
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 240 5.9% 10%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 0 0% 98%;
   }
 }
 
@@ -198,5 +616,92 @@
   
   .elevated-shadow {
     box-shadow: var(--shadow-elevated);
+  }
+
+  /* Configurable Shadow System */
+  .shadow-theme-sm {
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .shadow-theme-md {
+    box-shadow: var(--shadow-md);
+  }
+  
+  .shadow-theme-lg {
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .shadow-theme-xl {
+    box-shadow: var(--shadow-xl);
+  }
+
+  /* Configurable Border Radius System */
+  .rounded-theme-sm {
+    border-radius: var(--border-radius-sm);
+  }
+  
+  .rounded-theme-md {
+    border-radius: var(--border-radius-md);
+  }
+  
+  .rounded-theme-lg {
+    border-radius: var(--border-radius-lg);
+  }
+  
+  .rounded-theme-xl {
+    border-radius: var(--border-radius-xl);
+  }
+
+  /* Configurable Border System */
+  .border-theme {
+    border: var(--border-width) solid hsl(var(--border));
+  }
+  
+  .border-theme-primary {
+    border: var(--border-width) solid hsl(var(--primary));
+  }
+
+  /* Dynamic Shadow Intensity System */
+  html[data-shadow-intensity="subtle"] {
+    --shadow-sm: 0 1px 2px 0 hsl(var(--primary) / 0.05);
+    --shadow-md: 0 2px 4px -1px hsl(var(--primary) / 0.08);
+    --shadow-lg: 0 4px 8px -2px hsl(var(--primary) / 0.1);
+    --shadow-xl: 0 8px 16px -4px hsl(var(--primary) / 0.12);
+    --shadow-card: 0 2px 6px -2px hsl(var(--primary) / 0.08);
+    --shadow-elevated: 0 4px 12px -4px hsl(var(--primary) / 0.1);
+  }
+
+  html[data-shadow-intensity="normal"] {
+    /* Uses default shadow values */
+  }
+
+  html[data-shadow-intensity="strong"] {
+    --shadow-sm: 0 2px 4px 0 hsl(var(--primary) / 0.15);
+    --shadow-md: 0 6px 12px -2px hsl(var(--primary) / 0.2);
+    --shadow-lg: 0 12px 24px -6px hsl(var(--primary) / 0.25);
+    --shadow-xl: 0 24px 36px -12px hsl(var(--primary) / 0.3);
+    --shadow-card: 0 6px 16px -6px hsl(var(--primary) / 0.2);
+    --shadow-elevated: 0 12px 30px -12px hsl(var(--primary) / 0.25);
+  }
+
+  /* Dynamic Border Radius System */
+  html[data-border-radius="sharp"] {
+    --border-radius-sm: 0.125rem;
+    --border-radius-md: 0.25rem;
+    --border-radius-lg: 0.375rem;
+    --border-radius-xl: 0.5rem;
+    --radius: 0.25rem;
+  }
+
+  html[data-border-radius="normal"] {
+    /* Uses default radius values */
+  }
+
+  html[data-border-radius="rounded"] {
+    --border-radius-sm: 0.5rem;
+    --border-radius-md: 0.75rem;
+    --border-radius-lg: 1rem;
+    --border-radius-xl: 1.5rem;
+    --radius: 0.75rem;
   }
 }
