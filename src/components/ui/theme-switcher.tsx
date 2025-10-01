@@ -67,6 +67,20 @@ const ThemePreview: React.FC<ThemePreviewProps> = ({ theme, isSelected, onClick 
           background: 'hsl(0, 0%, 100%)',
           accent: 'hsl(240, 5.9%, 20%)',
         };
+      case 'huemint':
+        return {
+          primary: 'hsl(0, 100%, 50%)',
+          secondary: 'hsl(0, 0%, 24%)',
+          background: 'hsl(0, 0%, 100%)',
+          accent: 'hsl(0, 100%, 60%)',
+        };
+      case 'dentsu':
+        return {
+          primary: 'hsl(0, 0%, 0%)',
+          secondary: 'hsl(174, 64%, 47%)',
+          background: 'hsl(200, 15%, 92%)',
+          accent: 'hsl(14, 100%, 57%)',
+        };
       default:
         return {
           primary: 'hsl(340, 82%, 52%)',

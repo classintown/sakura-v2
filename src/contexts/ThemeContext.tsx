@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-export type Theme = 'sakura' | 'corporate' | 'lavender' | 'midnight' | 'neutral';
+export type Theme = 'sakura' | 'corporate' | 'lavender' | 'midnight' | 'neutral' | 'huemint' | 'dentsu';
 
 export interface ThemeConfig {
   id: Theme;
@@ -41,6 +41,18 @@ export const themes: ThemeConfig[] = [
     name: 'Neutral',
     description: 'Clean grays with subtle color hints',
     primaryColor: 'hsl(240, 5.9%, 10%)',
+  },
+  {
+    id: 'huemint',
+    name: 'Huemint',
+    description: 'Bold dark gray and vibrant red contrast',
+    primaryColor: 'hsl(0, 100%, 50%)',
+  },
+  {
+    id: 'dentsu',
+    name: 'Dentsu',
+    description: 'Innovative multi-color palette',
+    primaryColor: 'hsl(0, 0%, 0%)',
   },
 ];
 

@@ -704,4 +704,286 @@
     --border-radius-xl: 1.5rem;
     --radius: 0.75rem;
   }
+
+  /* ============================================
+     HUEMINT THEME - Dark Gray + Red Contrast
+     ============================================ */
+  
+  html[data-theme="huemint"] {
+    --background: 0 0% 100% !important;
+    --foreground: 0 0% 24% !important;
+
+    --card: 0 0% 100% !important;
+    --card-foreground: 0 0% 24% !important;
+
+    --popover: 0 0% 100% !important;
+    --popover-foreground: 0 0% 24% !important;
+
+    /* Huemint Primary - Vibrant Red */
+    --primary: 0 100% 50% !important;
+    --primary-foreground: 0 0% 100% !important;
+    --primary-light: 0 100% 60% !important;
+    --primary-dark: 0 100% 40% !important;
+
+    /* Huemint Secondary - Dark Gray */
+    --secondary: 0 0% 24% !important;
+    --secondary-foreground: 0 0% 100% !important;
+
+    --muted: 0 0% 96.1% !important;
+    --muted-foreground: 0 0% 45.1% !important;
+
+    --accent: 0 0% 96.1% !important;
+    --accent-foreground: 0 0% 24% !important;
+
+    --destructive: 0 84.2% 60.2% !important;
+    --destructive-foreground: 0 0% 98% !important;
+
+    /* Huemint Light Borders & Inputs */
+    --border: 0 0% 89.8% !important;
+    --input: 0 0% 89.8% !important;
+    --ring: 0 100% 50% !important;
+
+    /* Huemint Light Gradients */
+    --gradient-sakura: linear-gradient(135deg, hsl(0, 100%, 50%) 0%, hsl(0, 100%, 60%) 100%) !important;
+    --gradient-sakura-light: linear-gradient(135deg, hsl(0, 100%, 60%) 0%, hsl(0, 100%, 70%) 100%) !important;
+    --gradient-subtle: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(0, 0%, 96%) 100%) !important;
+
+    /* Huemint Light Shadows */
+    --shadow-sakura: 0 10px 30px -10px hsl(0 100% 50% / 0.3) !important;
+    --shadow-card: 0 4px 12px -4px hsl(0 100% 50% / 0.1) !important;
+    --shadow-elevated: 0 8px 25px -8px hsl(0 100% 50% / 0.2) !important;
+
+    /* Huemint Light Configurable Borders & Shadows */
+    --border-width: 1px !important;
+    --border-radius-sm: 0.375rem !important;
+    --border-radius-md: 0.5rem !important;
+    --border-radius-lg: 0.75rem !important;
+    --border-radius-xl: 1rem !important;
+    
+    /* Huemint Light Shadow System */
+    --shadow-sm: 0 2px 4px 0 hsl(0 100% 50% / 0.1) !important;
+    --shadow-md: 0 6px 12px -2px hsl(0 100% 50% / 0.15) !important;
+    --shadow-lg: 0 12px 24px -6px hsl(0 100% 50% / 0.2) !important;
+    --shadow-xl: 0 24px 36px -12px hsl(0 100% 50% / 0.25) !important;
+
+    /* Huemint Light Sidebar */
+    --sidebar-background: 0 0% 98% !important;
+    --sidebar-foreground: 0 0% 24% !important;
+    --sidebar-primary: 0 100% 50% !important;
+    --sidebar-primary-foreground: 0 0% 98% !important;
+    --sidebar-accent: 0 0% 95% !important;
+    --sidebar-accent-foreground: 0 0% 24% !important;
+    --sidebar-border: 0 0% 89.8% !important;
+    --sidebar-ring: 0 100% 50% !important;
+  }
+
+  html[data-theme="huemint"].dark {
+    --background: 0 0% 10% !important;
+    --foreground: 0 0% 98% !important;
+
+    --card: 0 0% 10% !important;
+    --card-foreground: 0 0% 98% !important;
+
+    --popover: 0 0% 10% !important;
+    --popover-foreground: 0 0% 98% !important;
+
+    /* Huemint Primary - Vibrant Red (Dark Mode) */
+    --primary: 0 100% 55% !important;
+    --primary-foreground: 0 0% 100% !important;
+    --primary-light: 0 100% 65% !important;
+    --primary-dark: 0 100% 45% !important;
+
+    /* Huemint Secondary - Dark Gray */
+    --secondary: 0 0% 24% !important;
+    --secondary-foreground: 0 0% 98% !important;
+
+    --muted: 0 0% 15% !important;
+    --muted-foreground: 0 0% 65.1% !important;
+
+    --accent: 0 0% 15% !important;
+    --accent-foreground: 0 0% 98% !important;
+
+    --destructive: 0 62.8% 30.6% !important;
+    --destructive-foreground: 0 0% 98% !important;
+
+    /* Huemint Dark Borders & Inputs */
+    --border: 0 0% 20% !important;
+    --input: 0 0% 15% !important;
+    --ring: 0 100% 55% !important;
+
+    /* Huemint Dark Gradients */
+    --gradient-sakura: linear-gradient(135deg, hsl(0, 100%, 55%) 0%, hsl(0, 100%, 65%) 100%) !important;
+    --gradient-sakura-light: linear-gradient(135deg, hsl(0, 100%, 65%) 0%, hsl(0, 100%, 75%) 100%) !important;
+    --gradient-subtle: linear-gradient(180deg, hsl(0, 0%, 10%) 0%, hsl(0, 0%, 15%) 100%) !important;
+
+    /* Huemint Dark Shadows */
+    --shadow-sakura: 0 10px 30px -10px hsl(0 100% 55% / 0.4) !important;
+    --shadow-card: 0 4px 12px -4px hsl(0 100% 55% / 0.15) !important;
+    --shadow-elevated: 0 8px 25px -8px hsl(0 100% 55% / 0.25) !important;
+
+    /* Huemint Dark Configurable Borders & Shadows */
+    --border-width: 1px !important;
+    --border-radius-sm: 0.375rem !important;
+    --border-radius-md: 0.5rem !important;
+    --border-radius-lg: 0.75rem !important;
+    --border-radius-xl: 1rem !important;
+    
+    /* Huemint Dark Shadow System */
+    --shadow-sm: 0 2px 4px 0 hsl(0 100% 55% / 0.15) !important;
+    --shadow-md: 0 6px 12px -2px hsl(0 100% 55% / 0.2) !important;
+    --shadow-lg: 0 12px 24px -6px hsl(0 100% 55% / 0.25) !important;
+    --shadow-xl: 0 24px 36px -12px hsl(0 100% 55% / 0.3) !important;
+
+    /* Huemint Dark Sidebar */
+    --sidebar-background: 0 0% 8% !important;
+    --sidebar-foreground: 0 0% 85% !important;
+    --sidebar-primary: 0 100% 55% !important;
+    --sidebar-primary-foreground: 0 0% 100% !important;
+    --sidebar-accent: 0 0% 15% !important;
+    --sidebar-accent-foreground: 0 0% 85% !important;
+    --sidebar-border: 0 0% 20% !important;
+    --sidebar-ring: 0 100% 55% !important;
+  }
+
+  /* ============================================
+     DENTSU THEME - Innovative Multi-Color
+     ============================================ */
+  
+  html[data-theme="dentsu"] {
+    --background: 200 15% 92% !important;
+    --foreground: 0 0% 0% !important;
+
+    --card: 0 0% 100% !important;
+    --card-foreground: 0 0% 0% !important;
+
+    --popover: 0 0% 100% !important;
+    --popover-foreground: 0 0% 0% !important;
+
+    /* Dentsu Primary - Black */
+    --primary: 0 0% 0% !important;
+    --primary-foreground: 0 0% 100% !important;
+    --primary-light: 0 0% 20% !important;
+    --primary-dark: 0 0% 0% !important;
+
+    /* Dentsu Secondary - Teal Accent */
+    --secondary: 174 64% 47% !important;
+    --secondary-foreground: 0 0% 100% !important;
+
+    --muted: 200 15% 88% !important;
+    --muted-foreground: 0 0% 45.1% !important;
+
+    /* Dentsu Accent - Orange */
+    --accent: 14 100% 57% !important;
+    --accent-foreground: 0 0% 100% !important;
+
+    --destructive: 0 84.2% 60.2% !important;
+    --destructive-foreground: 0 0% 98% !important;
+
+    /* Dentsu Light Borders & Inputs */
+    --border: 200 15% 85% !important;
+    --input: 200 15% 85% !important;
+    --ring: 0 0% 0% !important;
+
+    /* Dentsu Light Gradients */
+    --gradient-sakura: linear-gradient(135deg, hsl(174, 64%, 47%) 0%, hsl(14, 100%, 57%) 50%, hsl(234, 89%, 65%) 100%) !important;
+    --gradient-sakura-light: linear-gradient(135deg, hsl(174, 64%, 57%) 0%, hsl(14, 100%, 67%) 50%, hsl(234, 89%, 75%) 100%) !important;
+    --gradient-subtle: linear-gradient(180deg, hsl(200, 15%, 92%) 0%, hsl(200, 15%, 96%) 100%) !important;
+
+    /* Dentsu Light Shadows */
+    --shadow-sakura: 0 10px 30px -10px hsl(0 0% 0% / 0.2) !important;
+    --shadow-card: 0 4px 12px -4px hsl(0 0% 0% / 0.08) !important;
+    --shadow-elevated: 0 8px 25px -8px hsl(0 0% 0% / 0.15) !important;
+
+    /* Dentsu Light Configurable Borders & Shadows */
+    --border-width: 1px !important;
+    --border-radius-sm: 0.375rem !important;
+    --border-radius-md: 0.5rem !important;
+    --border-radius-lg: 0.75rem !important;
+    --border-radius-xl: 1rem !important;
+    
+    /* Dentsu Light Shadow System */
+    --shadow-sm: 0 2px 4px 0 hsl(0 0% 0% / 0.08) !important;
+    --shadow-md: 0 6px 12px -2px hsl(0 0% 0% / 0.12) !important;
+    --shadow-lg: 0 12px 24px -6px hsl(0 0% 0% / 0.16) !important;
+    --shadow-xl: 0 24px 36px -12px hsl(0 0% 0% / 0.2) !important;
+
+    /* Dentsu Light Sidebar */
+    --sidebar-background: 0 0% 98% !important;
+    --sidebar-foreground: 0 0% 0% !important;
+    --sidebar-primary: 174 64% 47% !important;
+    --sidebar-primary-foreground: 0 0% 100% !important;
+    --sidebar-accent: 200 15% 95% !important;
+    --sidebar-accent-foreground: 0 0% 0% !important;
+    --sidebar-border: 200 15% 85% !important;
+    --sidebar-ring: 0 0% 0% !important;
+  }
+
+  html[data-theme="dentsu"].dark {
+    --background: 0 0% 8% !important;
+    --foreground: 0 0% 98% !important;
+
+    --card: 0 0% 10% !important;
+    --card-foreground: 0 0% 98% !important;
+
+    --popover: 0 0% 10% !important;
+    --popover-foreground: 0 0% 98% !important;
+
+    /* Dentsu Primary - Black/Dark (Dark Mode) */
+    --primary: 0 0% 15% !important;
+    --primary-foreground: 0 0% 100% !important;
+    --primary-light: 0 0% 25% !important;
+    --primary-dark: 0 0% 10% !important;
+
+    /* Dentsu Secondary - Teal Accent */
+    --secondary: 174 64% 52% !important;
+    --secondary-foreground: 0 0% 100% !important;
+
+    --muted: 0 0% 15% !important;
+    --muted-foreground: 0 0% 65.1% !important;
+
+    /* Dentsu Accent - Orange */
+    --accent: 14 100% 62% !important;
+    --accent-foreground: 0 0% 100% !important;
+
+    --destructive: 0 62.8% 30.6% !important;
+    --destructive-foreground: 0 0% 98% !important;
+
+    /* Dentsu Dark Borders & Inputs */
+    --border: 0 0% 20% !important;
+    --input: 0 0% 15% !important;
+    --ring: 174 64% 52% !important;
+
+    /* Dentsu Dark Gradients */
+    --gradient-sakura: linear-gradient(135deg, hsl(174, 64%, 52%) 0%, hsl(14, 100%, 62%) 50%, hsl(234, 89%, 70%) 100%) !important;
+    --gradient-sakura-light: linear-gradient(135deg, hsl(174, 64%, 62%) 0%, hsl(14, 100%, 72%) 50%, hsl(234, 89%, 80%) 100%) !important;
+    --gradient-subtle: linear-gradient(180deg, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 12%) 100%) !important;
+
+    /* Dentsu Dark Shadows */
+    --shadow-sakura: 0 10px 30px -10px hsl(174 64% 52% / 0.3) !important;
+    --shadow-card: 0 4px 12px -4px hsl(174 64% 52% / 0.12) !important;
+    --shadow-elevated: 0 8px 25px -8px hsl(174 64% 52% / 0.2) !important;
+
+    /* Dentsu Dark Configurable Borders & Shadows */
+    --border-width: 1px !important;
+    --border-radius-sm: 0.375rem !important;
+    --border-radius-md: 0.5rem !important;
+    --border-radius-lg: 0.75rem !important;
+    --border-radius-xl: 1rem !important;
+    
+    /* Dentsu Dark Shadow System */
+    --shadow-sm: 0 2px 4px 0 hsl(174 64% 52% / 0.15) !important;
+    --shadow-md: 0 6px 12px -2px hsl(174 64% 52% / 0.2) !important;
+    --shadow-lg: 0 12px 24px -6px hsl(174 64% 52% / 0.25) !important;
+    --shadow-xl: 0 24px 36px -12px hsl(174 64% 52% / 0.3) !important;
+
+    /* Dentsu Dark Sidebar */
+    --sidebar-background: 0 0% 6% !important;
+    --sidebar-foreground: 0 0% 85% !important;
+    --sidebar-primary: 174 64% 52% !important;
+    --sidebar-primary-foreground: 0 0% 100% !important;
+    --sidebar-accent: 0 0% 12% !important;
+    --sidebar-accent-foreground: 0 0% 85% !important;
+    --sidebar-border: 0 0% 20% !important;
+    --sidebar-ring: 174 64% 52% !important;
+  }
 }
